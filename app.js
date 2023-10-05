@@ -33,7 +33,7 @@ const getComputerChoice = () => {
     }
 };
 
-const getWinner = (cChoice, pChoice = DEFAULT_USER_CHOICE) => {
+const getWinner = (cChoice, pChoice = DEFAULT_USER_CHOICE) =>
     cChoice === pChoice
         ? RESULT_DRAW
         : (cChoice === ROCK && pChoice === PAPER) ||
@@ -41,9 +41,19 @@ const getWinner = (cChoice, pChoice = DEFAULT_USER_CHOICE) => {
           (cChoice === SCISSORS && pChoice === ROCK)
         ? RESULT_PLAYER_WINS
         : RESULT_COMPUTER_WINS;
-};
 
-// console.dir(startGame);
+// if (cChoice === pChoice) {
+//   return RESULT_DRAW;
+// } else if (
+//   (cChoice === ROCK && pChoice === PAPER) ||
+//   (cChoice === PAPER && pChoice === SCISSORS) ||
+//   (cChoice === SCISSORS && pChoice === ROCK)
+// ) {
+//   return RESULT_PLAYER_WINS;
+// } else {
+//   return RESULT_COMPUTER_WINS;
+// }
+
 startGameBtn.addEventListener("click", () => {
     if (gameIsRunning) {
         return;
@@ -58,7 +68,9 @@ startGameBtn.addEventListener("click", () => {
     } else {
         winner = getWinner(computerChoice);
     }
-    let message = `You picked ${playerChoice || DEFAULT_USER_CHOICE}, computer picked ${computerChoice}, so you `;
+    let message = `You picked ${
+        playerChoice || DEFAULT_USER_CHOICE
+    }, computer picked ${computerChoice}, therefore you `;
     if (winner === RESULT_DRAW) {
         message = message + "had a draw.";
     } else if (winner === RESULT_PLAYER_WINS) {
@@ -69,3 +81,37 @@ startGameBtn.addEventListener("click", () => {
     alert(message);
     gameIsRunning = false;
 });
+
+// not related - easy sum method
+
+const combine = (resultHandler, operation, ...numbers) => {
+    const validateNumber = (number) => {
+        return isNaN(number) ? 0 : number;
+    };
+
+    let sum = 0;
+    for (const num of numbers) {
+        if (operation === "ADD") {
+            sum += validateNumber(num);
+        } else {
+            sum -= validateNumber(num);
+        }
+        resultHandler(sum);
+    }
+};
+
+// const subtractUp = function(resultHandler, ...numbers) {
+//     let sum = 0;
+//     for (const num of numbers) { // don't use it, better to use rest operator
+//         sum -= num;
+//     }
+//     resultHandler(sum);
+// };
+
+const showRes = (messageText, result) => {
+    alert(messageText + " " + result);
+};
+
+console.log(combine(showRes.bind(this, 'The result after adding all numbers is:'), "ADD", 14, 12, 3, 1, 25, 39)); // see result
+// console.log(combine([showRes.bind(this, 'The result after adding all numbers is:'),'ADD',14,12,'gadfsa',1,25])); // see all numbers
+console.log(combine(showRes.bind(this, 'The result after subtracting all numbers is:'), "SUBTRACT", 17, 11, 3, 4, 15, 29));
